@@ -136,8 +136,8 @@ async function updateTask(task_id) {
       document.getElementById("updateTaskBtn").setAttribute("disabled", "true");
       document.getElementById("addTaskBtn").removeAttribute("disabled");
 
-      document.getElementById("title-"+task_id).innerHTML = title;
-      document.getElementById("description-"+task_id).innerHTML = description;
+      document.getElementById("title-" + task_id).innerHTML = title;
+      document.getElementById("description-" + task_id).innerHTML = description;
     } else {
       alert("Task not updated");
     }
@@ -145,7 +145,6 @@ async function updateTask(task_id) {
 }
 
 async function updateTaskData(task_id, taskList) {
-
   const response = await fetch(CRUD_BASEURL + "tasks/" + task_id, {
     method: "PUT",
     headers: {
