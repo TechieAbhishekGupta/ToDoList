@@ -72,8 +72,8 @@ async function addTask() {
 
   var listTemplate = ` <a href="#" id="a-${newList._id}"class="list-group-item list-group-item-action active" aria-current="true">
  <div class="d-flex w-100 justify-content-between">
- <h5 class="mb-1">${newList.title}</h5>
- <button type="button" class="btn btn-sm btn-secondary" id="editTaskBtn-${newList._id}">
+ <h5 class="mb-1" id="title-${newList._id}" >${newList.title}</h5>
+ <button type="button" class="btn btn-sm btn-secondary" id="editTaskBtn-${newList._id}" onclick="updateTask('${newList._id}')">
  Edit
 </button>
 
@@ -82,7 +82,7 @@ Delete
 </button>
 
  </div>
- <p class="mb-1">${newList.description}</p>
+ <p class="mb-1" id="description-${newList._id}" >${newList.description}</p>
  </a>`;
   taskListjson.push(newList);
 
@@ -122,7 +122,6 @@ async function updateTask(task_id) {
 
   document.getElementById("title").value = task.title;
   document.getElementById("desc").value = task.description;
-  // document.getElementById("addTaskBtn").innerHTML = "Update Task";
 
   updateBtnElmRef.addEventListener("click", async function () {
     const title = document.getElementById("title").value;
@@ -175,10 +174,9 @@ async function deleteTaskData(task_id) {
     })
       .then((el) => {
         document.getElementById("a-" + task_id).remove();
-        //document.getElementById(task_id).remove();
       })
       .catch((er) => {
-        alert("Enable to delete the student. See console for more information");
+        alert("Enable to delete the task. See console for more information.");
         console.log(er);
       });
   }
