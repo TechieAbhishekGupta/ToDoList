@@ -1,7 +1,7 @@
 window.addEventListener("load", loadTasks);
 
 const CRUD_BASEURL =
-  "https://crudcrud.com/api/b91deceb286c4ed9a80d2f20d4f14e6b/";
+  "https://crudcrud.com/api/5f15417feb4642aa9b57396fb3aa9474/";
 
 var taskListjson;
 var taskListRef;
@@ -11,28 +11,28 @@ async function loadTasks() {
 
   taskListRef.innerHTML = fetch(CRUD_BASEURL + "tasks").then(async (el) => {
     taskListjson = await el.json();
-    //console.log(taskListjson);
 
     taskListjson.forEach((element) => {
       console.log(element);
-      //console.log(index);
 
       var listTemplate = `
-      <a href="#"  data-taskID="${element._id}" class="list-group-item list-group-item-action" aria-current="true">
+      <a href="#" id="a-${element._id}" data-taskID="${element._id}" class="list-group-item list-group-item-action" aria-current="true">
       <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1" id="title-${element._id}" >${element.title}</h5>
       <button type="button" class="btn btn-sm btn-secondary" onclick="updateTask('${element._id}')">
           Edit
         </button>
+
+      <button type="button" class="btn btn-sm btn-danger" onclick="deleteTaskData('${element._id}')">
+          Delete
+        </button>
+
       </div>
       <p class="mb-1" id="description-${element._id}" >${element.description}</p>
       </a>
       `;
 
       taskListRef.innerHTML += listTemplate;
-
-      //   editBtnElmRef = document.getElementById("editTaskBtn-${element._id}");
-      // editBtnElmRef.addEventListener("click", updateTask);
     });
   });
 }
@@ -70,12 +70,17 @@ async function addTask() {
     description: description,
   });
 
-  var listTemplate = ` <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+  var listTemplate = ` <a href="#" id="a-${newList._id}"class="list-group-item list-group-item-action active" aria-current="true">
  <div class="d-flex w-100 justify-content-between">
  <h5 class="mb-1">${newList.title}</h5>
  <button type="button" class="btn btn-sm btn-secondary" id="editTaskBtn-${newList._id}">
  Edit
 </button>
+
+<button type="button" class="btn btn-sm btn-danger" onclick="deleteTaskData('${newList._id}')">
+Delete
+</button>
+
  </div>
  <p class="mb-1">${newList.description}</p>
  </a>`;
@@ -157,5 +162,24 @@ async function updateTaskData(task_id, taskList) {
     return true;
   } else {
     return false;
+  }
+}
+
+async function deleteTaskData(task_id) {
+
+  const isConfirmed = confirm("Are you sure you want to delete?");
+
+  if (isConfirmed) {
+    fetch(CRUD_BASEURL + "tasks/" + task_id, {
+      method: "DELETE",
+    })
+      .then((el) => {
+        document.getElementById("a-" + task_id).remove();
+        //document.getElementById(task_id).remove();
+      })
+      .catch((er) => {
+        alert("Enable to delete the student. See console for more information");
+        console.log(er);
+      });
   }
 }
