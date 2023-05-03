@@ -18,7 +18,7 @@ async function loadTasks() {
       console.log(element);
 
       var listTemplate = `
-      <a href="#" id="a-${element._id}" data-taskID="${element._id}" class="list-group-item list-group-item-action" aria-current="true">
+      <a href="#" id="a-${element._id}" data-taskID="${element._id}" class="container list-group-item list-group-item-action" aria-current="true">
       <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1" id="title-${element._id}" >${element.title}</h5>
       
@@ -79,7 +79,7 @@ async function addTask() {
     description: description,
   });
 
-  var listTemplate = ` <a href="#" id="a-${newList._id}"class="list-group-item list-group-item-action active" aria-current="true">
+  var listTemplate = ` <a href="#" id="a-${newList._id}"class="conatiner list-group-item list-group-item-action active " aria-current="true">
  <div class="d-flex w-100 justify-content-between">
  <h5 class="mb-1" id="title-${newList._id}" >${newList.title}</h5>
  <button type="button" class="btn btn-sm btn-secondary" id="editTaskBtn-${newList._id}" onclick="updateTask('${newList._id}')">
