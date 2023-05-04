@@ -21,7 +21,7 @@ async function loadTasks() {
       <a href="#" id="a-${element._id}" data-taskID="${element._id}" class="container list-group-item list-group-item-action" aria-current="true">
       <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1" id="title-${element._id}" >${element.title}</h5>
-      <small id="date-${newList._id}">${newList.date}</small>
+      <small id="date-${element._id}">${element.date}</small>
       
       <div>
       <button type="button" class="btn btn-sm btn-secondary" onclick="updateTask('${element._id}')">
@@ -88,10 +88,11 @@ async function addTask() {
     date: date,
   });
 
-  var listTemplate = ` <a href="#" id="a-${newList._id}"class="conatiner list-group-item list-group-item-action active " aria-current="true">
+  var listTemplate = ` <a href="#" id="a-${newList._id}" class="container list-group-item list-group-item-action active " aria-current="true">
  <div class="d-flex w-100 justify-content-between">
  <h5 class="mb-1" id="title-${newList._id}" >${newList.title}</h5>
  <small id="date-${newList._id}">${newList.date}</small>
+
  <div>
  <button type="button" class="btn btn-sm btn-secondary" id="editTaskBtn-${newList._id}" onclick="updateTask('${newList._id}')">
  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
