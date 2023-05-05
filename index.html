@@ -5,85 +5,147 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">		
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap@5.3.0 alpha CSS CDN link -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+    />
+
+    <!-- Bootstrap Icons CDN link -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
 
     <title>To Do List</title>
   </head>
-  <body class='bg-body-secondary'>
-    <div class="container flex-lg-wrap position-static">
-      <h5 class="mt-1 mb-2 text-info bg-body-tertiary text-center p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">Add Task Form:</h5>
 
-      <form>
-        <div class="mb-3">
-          <label for="title" class="form-label">Title</label>
+  <body class="bg-body-secondary">
+    <!-- Add Task Form  -->
+    <section>
+      <div class="container flex-lg-wrap position-static">
+        <h2
+          class="mt-1 mb-2 text-info bg-body-tertiary text-center p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3"
+        >
+          Add Task Form
+        </h2>
 
-          <input type="text" class="form-control" id="title" />
+        <form action="">
+          <!-- Task Title and Due Date -->
+          <div class="container row mb-3">
+            <!-- Title  -->
+            <div class="col">
+              <label for="title" class="form-label">Title</label>
 
-          <div id="title-error" class="form-text text-danger visually-hidden">
-            Required Field
-          </div>
-        </div>
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                placeholder="Task Title"
+              />
 
-        <div class="mb-3">
-          <label for="desc" class="form-label">Description</label>
-          <textarea row="2" class="form-control" id="desc"></textarea>
-          <div id="desc-error" class="form-text text-danger visually-hidden">
-            Required Field
-          </div>
-        </div>
-
-       <div>
-         <label for="date" class="col-1 col-form-label">Date</label>
-            <div class="col-3">
-              <div class="input-group date" id="datepicker">
-                <input type="text" class="form-control" id="date"/>
-                <span class="input-group-append">
-                  <span class="input-group-text bg-light d-block">
-                    <i class="fa fa-calendar"></i>
-                  </span>
-                </span>
+              <div
+                id="title-error"
+                class="form-text text-danger visually-hidden"
+              >
+                Required Field
               </div>
             </div>
-      
-          <div id="date-error" class="form-text text-danger visually-hidden">
-            Required Field
+
+            <!-- Date -->
+            <div class="col">
+              <label for="date" class="form-label">Date</label>
+
+              <input type="date" class="form-control" id="date" />
+
+              <div
+                id="date-error"
+                class="form-text text-danger visually-hidden"
+              >
+                Required Field
+              </div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="container mb-3">
+            <label for="desc" class="form-label">Description</label>
+
+            <textarea
+              row="2"
+              class="form-control"
+              id="desc"
+              placeholder="Task Description"
+            ></textarea>
+
+            <div id="desc-error" class="form-text text-danger visually-hidden">
+              Required Field
+            </div>
+          </div>
+        </form>
+
+        <div class="container row mb-3">
+          <!-- Add Task and Update Task Buttons -->
+          <div class="col d-grid gap-2">
+            <button
+              type="button"
+              class="btn btn-primary btn-lg"
+              id="addTaskBtn"
+            >
+              Add Task
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary btn-lg d-none"
+              id="updateTaskBtn"
+            >
+              Update Task
+            </button>
+          </div>
+
+          <!-- Search Box -->
+          <div class="col rounded input-group">
+            <input
+              type="search"
+              id="searchBox"
+              class="form-control rounded"
+              placeholder="Search Task..."
+              onfocus="loadTasks()"
+              onblur="(event)=>{
+                !event.target.value && loadTasks();
+              }"
+              onkeyup="searchTask(event)"
+            />
+            <span class="input-group-text border-0">
+              <i class="bi bi-search"></i>
+            </span>
           </div>
         </div>
       </div>
+    </section>
 
-        <input type="hidden" id="editTaskID" />
-        <button style = "margin-left: 16%; margin-top: 1%;" type="button" class="btn btn-primary" id="addTaskBtn">
-          Add Task
-        </button>
+    <!-- Tasks List -->
+    <section class="container">
+      <table class="container table mb-0">
+        <thead>
+          <tr>
+            <th scope="col">Tasks</th>
+            <th scope="col">Due Date</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+      </table>
 
-        <button style = "margin-left: 16%; margin-top: 1%;"
-          type="button"
-          class="btn btn-primary d-none"
-          id="updateTaskBtn"
-        >
-          Update Task
-        </button>
-      </form>
-    </div>
+      <div class="container list-group pt-2 m-2" id="taskList">
+        <h1>No task found...</h1>
+      </div>
+    </section>
 
-    <div id="taskList" class="list-group pt-2 ">
-      <h1 id="noContent">No task found</h1>
-    </div>
+    <!-- Bootstrap@5.3.0 alpha JS CDN link -->
+    <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JS File -->
     <script src="script.js"></script>
-    <script type = "text/javascript">
-      $(function() {
-        $('#datepicker').datepicker();
-      });
-    </script>
   </body>
 </html>
