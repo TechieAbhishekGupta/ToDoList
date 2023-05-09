@@ -1,7 +1,7 @@
 window.addEventListener("load", loadTasks);
 
 const CRUD_BASEURL =
-  "https://crudcrud.com/api/fe8874ec9f0040f6aa0a4e155fd48f04/";
+  "https://crudcrud.com/api/0ab236e25f154fb8a92e6fdfdcb9be35/";
 
 var taskListjson;
 var taskListRef;
@@ -78,8 +78,9 @@ function isTaskListValid(title, description, date) {
   }
 
   if (!isFormValid) {
-    return;
+    return false;
   }
+  return true;
 }
 
 const addTaskBtnRef = document.getElementById("addTaskBtn");
@@ -90,23 +91,24 @@ async function addTask() {
   const title = document.getElementById("title").value;
   const description = document.getElementById("desc").value;
   const date = document.getElementById("date").value;
+  // isTaskListValid(title, description, date);
 
-  isTaskListValid(title, description, date);
+  if (isTaskListValid(title, description, date)) {
+    const newList = await postList({
+      title: title,
+      description: description,
+      date: date,
+    });
 
-  const newList = await postList({
-    title: title,
-    description: description,
-    date: date,
-  });
+    taskListjson.push(newList);
 
-  taskListjson.push(newList);
+    var listTemplate = renderListItem(newList, true);
+    taskListRef.innerHTML = listTemplate + taskListRef.innerHTML;
 
-  var listTemplate = renderListItem(newList, true);
-  taskListRef.innerHTML = listTemplate + taskListRef.innerHTML;
-
-  document.getElementById("title").value = "";
-  document.getElementById("desc").value = "";
-  document.getElementById("date").value = "";
+    document.getElementById("title").value = "";
+    document.getElementById("desc").value = "";
+    document.getElementById("date").value = "";
+  }
 }
 
 async function postList(list) {
@@ -146,13 +148,13 @@ async function updateTask(task_id) {
     const description = document.getElementById("desc").value;
     const date = document.getElementById("date").value;
 
-    isTaskListValid(title, description, date);
-
-    const isUpdated = await updateTaskData(task_id, {
-      title,
-      description,
-      date,
-    });
+    if (isTaskListValid(title, description, date)) {
+      const isUpdated = await updateTaskData(task_id, {
+        title,
+        description,
+        date,
+      });
+    }
 
     if (isUpdated) {
       document.getElementById("title").value = "";
